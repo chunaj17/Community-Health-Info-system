@@ -1,0 +1,51 @@
+<resources>
+    <string name="app_name">Health Care</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="profile">profile</string>
+    <string name="setting">setting</string>
+    <string name="more">more</string>
+    <string name="search">search</string>
+    <string name="floating_action_button">Floating action button</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="welcome_back">Welcome Back</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="don_t_have_account">Don\'t have account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="welcome_to_health_care">Welcome To Health Care</string>
+    <string name="already_have_account">Already have account?</string>
+    <string name="question_title">question title</string>
+    <string name="zero">0</string>
+    <string name="votes">votes</string>
+    <string name="answers">answers</string>
+    <string name="views">views</string>
+    <string name="let_s_get_to_know_you_better">Let\'s get to know you better</string>
+    <string name="your_first_name">your first name here....</string>
+    <string name="age">age</string>
+    <string name="experience">experience</string>
+    <string name="specialization">specialization</string>
+    <string name="work_location">work location</string>
+    <string name="your_last_name_here">your last name here....</string>
+    <string name="finish">Finish</string>
+    <string name="doctor_profile_picture">Doctor profile picture</string>
+    <string name="home_address">home address</string>
+</resources>
