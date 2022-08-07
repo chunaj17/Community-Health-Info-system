@@ -16,4 +16,7 @@ interface AccessTokenDao {
 
     @Query("DELETE FROM accesstokenentity WHERE accessToken IN(:accessToken)")
     suspend fun deleteAccessToken(accessToken: List<String>)
+
+    @Query("SELECT * FROM accesstokenentity ")
+    suspend fun checkAccessToken():List<AccessTokenEntity>
 }

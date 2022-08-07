@@ -1,7 +1,9 @@
 package com.example.healthcare.ui.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
@@ -12,6 +14,8 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.healthcare.R
+import com.example.healthcare.core.Resource
+import com.example.healthcare.data.local.entity.AccessTokenEntity
 import com.example.healthcare.data.remote.dto.QuestionsTitleDto
 import com.example.healthcare.databinding.ActivityMainBinding
 import com.example.healthcare.ui.login.LoginActivity
@@ -59,7 +63,26 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         menuInflater.inflate(R.menu.menu_main, menu)
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem.actionView as SearchView
-        searchView.setQueryHint("Search for your question?")
+        searchView.queryHint = "Search for your question?"
+        mainActivityViewModel.checkAccessToken()
+        lifecycleScope.launchWhenStarted {
+            mainActivityViewModel.tokenState.collectLatest {
+                when(it.accessTokenData) {
+                    emptyList<List<AccessTokenEntity>>() -> {
+                        menu.findItem(R.id.profile_menu).isVisible = false
+                        menu.findItem(R.id.login_menu).isVisible = true
+                    }
+                    null ->  {
+                        menu.findItem(R.id.profile_menu).isVisible = false
+                        menu.findItem(R.id.login_menu).isVisible = true
+                    }
+                    else ->  {
+                        menu.findItem(R.id.profile_menu).isVisible = true
+                        menu.findItem(R.id.login_menu).isVisible = false
+                    }
+                }
+            }
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
@@ -82,11 +105,15 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
-            R.id.setting -> {
+            R.id.setting_menu -> {
                 println("setting")
                  true
             }
-            R.id.profile -> {
+            R.id.profile_menu -> {
+
+                true
+            }
+            R.id.login_menu -> {
                 val intent  = Intent(Intent(this, LoginActivity::class.java))
                 startActivity(intent)
                 finish()

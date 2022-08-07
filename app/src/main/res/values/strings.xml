@@ -48,4 +48,9 @@
     <string name="finish">Finish</string>
     <string name="doctor_profile_picture">Doctor profile picture</string>
     <string name="home_address">home address</string>
+    <string name="doctor">Doctor</string>
+    <string name="just_user">Just User</string>
+    <string name="tell_us_more_are_your">Tell us more.are your?</string>
+    <string name="doctor_Just_user">a Doctor? Or Just a User?</string>
+    <string name="are_you">Are You?</string>
 </resources>

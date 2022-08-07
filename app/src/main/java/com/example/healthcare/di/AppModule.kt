@@ -37,6 +37,7 @@ object AppModule {
             HealthCareDB::class.java,
             "health_care_db"
         )
+            .fallbackToDestructiveMigration()
             .build()
     }
 

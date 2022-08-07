@@ -6,7 +6,7 @@ import com.example.healthcare.data.local.entity.AccessTokenEntity
 
 @Database(
     entities = [AccessTokenEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 abstract class HealthCareDB:RoomDatabase() {

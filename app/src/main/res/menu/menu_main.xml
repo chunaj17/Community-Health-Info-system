@@ -17,16 +17,24 @@
         app:showAsAction="ifRoom">
         <menu>
             <item
-                android:id="@+id/setting"
+                android:id="@+id/setting_menu"
                 android:contentDescription="@string/setting"
                 android:icon="@drawable/ic_setting_24"
                 android:title="@string/setting"
                 app:showAsAction="ifRoom" />
             <item
-                android:id="@+id/profile"
+                android:id="@+id/profile_menu"
                 android:contentDescription="@string/profile"
                 android:icon="@drawable/ic_profile"
                 android:title="@string/profile"
+                android:visible="false"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/login_menu"
+                android:contentDescription="@string/profile"
+                android:icon="@drawable/ic_login_24"
+                android:title="@string/login"
+                android:visible="false"
                 app:showAsAction="ifRoom" />
         </menu>
 

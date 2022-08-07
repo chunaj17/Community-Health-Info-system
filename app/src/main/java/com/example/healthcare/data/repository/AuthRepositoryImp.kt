@@ -2,6 +2,7 @@ package com.example.healthcare.data.repository
 
 import com.example.healthcare.core.Resource
 import com.example.healthcare.data.local.AccessTokenDao
+import com.example.healthcare.data.local.entity.AccessTokenEntity
 import com.example.healthcare.data.remote.api.HealthCareApi
 import com.example.healthcare.data.remote.body.UserEmailAndPassword
 import com.example.healthcare.data.remote.dto.AuthLoginDto
@@ -51,6 +52,24 @@ constructor(
                 )
             )
         } catch (e: HttpException) {
+            emit(Resource.Error(
+                message = e.localizedMessage ?:  "couldn't reach server, check your internet settings!!"
+            ))
+        }
+    }
+
+    override fun getAccessToken(): Flow<Resource<List<AccessTokenEntity>>> = flow{
+        emit(Resource.Loading())
+        try {
+            val checkAccessToken = dao.checkAccessToken()
+            emit(Resource.Success(data = checkAccessToken))
+        }catch ( e:IOException){
+            emit(
+                Resource.Error(
+                    message = e.localizedMessage ?: "oops,something happened"
+                )
+            )
+        }catch (e: HttpException) {
             emit(Resource.Error(
                 message = e.localizedMessage ?:  "couldn't reach server, check your internet settings!!"
             ))
