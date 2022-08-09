@@ -31,9 +31,16 @@
                 app:showAsAction="ifRoom" />
             <item
                 android:id="@+id/login_menu"
-                android:contentDescription="@string/profile"
+                android:contentDescription="@string/login"
                 android:icon="@drawable/ic_login_24"
                 android:title="@string/login"
+                android:visible="false"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/logout_menu"
+                android:contentDescription="@string/logout"
+                android:icon="@drawable/ic_log_out_account"
+                android:title="@string/logout"
                 android:visible="false"
                 app:showAsAction="ifRoom" />
         </menu>

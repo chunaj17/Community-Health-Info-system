@@ -77,45 +77,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/experience"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="@string/experience">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/specialization"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="@string/specialization">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/work_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:endIconMode="clear_text"
-                android:hint="@string/work_location">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/home_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

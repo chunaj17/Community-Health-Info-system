@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/dialog_bg.xml" value="0.2985" />
+        <entry key="app/src/main/res/drawable/ic_log_out_account.xml" value="0.329" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/activity_more_doctor_sign_up.xml" value="0.340625" />
+        <entry key="app/src/main/res/layout/activity_more_user_sign_up.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.35520833333333335" />

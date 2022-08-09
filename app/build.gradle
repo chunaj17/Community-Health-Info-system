@@ -58,8 +58,9 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     // material dialog
     implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    //circle image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
