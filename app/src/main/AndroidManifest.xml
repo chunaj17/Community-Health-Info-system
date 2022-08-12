@@ -19,10 +19,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ask_question.AskQuestion"
+            android:exported="false"
+            android:label="@string/title_activity_ask_question"
+            android:theme="@style/Theme.HealthCare.NoActionBar" />
+        <activity
+            android:name=".ui.answer_list.AnswerListActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.more_profile.user.MoreUserSignUp"
             android:exported="false" />
         <activity
-            android:name="com.example.healthinfo.ui.ProfileActivity"
+            android:name="com.example.healthinfo.ui.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name="com.example.healthinfo.ui.more_profile.doctor.MoreDoctorSignUp"

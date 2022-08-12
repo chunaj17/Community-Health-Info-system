@@ -2,7 +2,6 @@ package com.example.healthinfo.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -16,8 +15,11 @@ import com.example.healthinfo.R
 import com.example.healthinfo.data.local.entity.AccessTokenEntity
 import com.example.healthinfo.data.remote.dto.QuestionsTitleDto
 import com.example.healthinfo.databinding.ActivityMainBinding
+import com.example.healthinfo.ui.answer_list.AnswerListActivity
+import com.example.healthinfo.ui.ask_question.AskQuestion
 import com.example.healthinfo.ui.login.LoginActivity
 import com.example.healthinfo.ui.main.adapter.QuestionTitleAdapter
+import com.example.healthinfo.ui.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -50,8 +52,21 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
             }
         }
         binding.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            lifecycleScope.launchWhenStarted {
+                mainActivityViewModel.tokenState.collectLatest {
+                    when(it.accessTokenData) {
+                        emptyList<AccessTokenEntity>() -> {
+                            val intent = Intent(Intent(this@MainActivity, SignUpActivity::class.java))
+                            startActivity(intent)
+                            finish()
+                        }
+                        else -> {
+                            val intent = Intent(Intent(this@MainActivity, AskQuestion::class.java))
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
         }
 
     }
@@ -65,20 +80,22 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         mainActivityViewModel.checkAccessToken()
         lifecycleScope.launchWhenStarted {
             mainActivityViewModel.tokenState.collectLatest {
-                when (it.accessTokenData) {
-                    emptyList<List<AccessTokenEntity>>() -> {
-                        menu.findItem(R.id.profile_menu).isVisible = false
-                        menu.findItem(R.id.login_menu).isVisible = true
-                    }
-                    null -> {
-                        menu.findItem(R.id.profile_menu).isVisible = false
-                        menu.findItem(R.id.login_menu).isVisible = true
-                        menu.findItem(R.id.logout_menu).isVisible = false
-                    }
-                    else -> {
-                        menu.findItem(R.id.profile_menu).isVisible = true
-                        menu.findItem(R.id.logout_menu).isVisible = true
-                        menu.findItem(R.id.login_menu).isVisible = false
+                when(it.isLoading) {
+                    true -> binding.progressBar.visibility = View.VISIBLE
+                    false -> {
+                        binding.progressBar.visibility = View.GONE
+                        when (it.accessTokenData) {
+                            emptyList<List<AccessTokenEntity>>() -> {
+                                menu.findItem(R.id.profile_menu).isVisible = false
+                                menu.findItem(R.id.login_menu).isVisible = true
+                                menu.findItem(R.id.logout_menu).isVisible = false
+                            }
+                            else -> {
+                                menu.findItem(R.id.profile_menu).isVisible = true
+                                menu.findItem(R.id.logout_menu).isVisible = true
+                                menu.findItem(R.id.login_menu).isVisible = false
+                            }
+                        }
                     }
                 }
             }
@@ -120,7 +137,6 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                 true
             }
             R.id.logout_menu -> {
-                mainActivityViewModel.checkAccessToken()
                 lifecycleScope.launchWhenStarted {
                     mainActivityViewModel.tokenState.collectLatest { tokenState ->
                         when (tokenState.isLoading) {
@@ -138,10 +154,9 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                                                     "user Logged out",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
-                                                finish()
-                                                startActivity(intent)
+                                                recreate()
                                             }
-                                            else -> true
+                                            true-> binding.progressBar.visibility = View.VISIBLE
                                         }
                                     }
                                 }
@@ -156,7 +171,11 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
     }
 
     override fun onItemSelected(position: Int, item: QuestionsTitleDto) {
-        println("clicked")
+
+        val intent = Intent(Intent(this, AnswerListActivity::class.java))
+        intent.putExtra("question_title",item.question_title)
+        startActivity(intent)
+        finish()
     }
 
 //    override fun onSupportNavigateUp(): Boolean {

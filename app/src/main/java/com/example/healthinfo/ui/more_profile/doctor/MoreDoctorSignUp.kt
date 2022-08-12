@@ -1,9 +1,11 @@
 package com.example.healthinfo.ui.more_profile.doctor
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.healthinfo.databinding.ActivityMoreDoctorSignUpBinding
@@ -28,6 +30,8 @@ class MoreDoctorSignUp : AppCompatActivity() {
         val loadingProgressBar = binding.progressBar
 
         binding.finishBtn.setOnClickListener {
+            val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
             when {
                 firstNameText!!.text.isEmpty() -> {
                     firstNameText.error = "enter first name"

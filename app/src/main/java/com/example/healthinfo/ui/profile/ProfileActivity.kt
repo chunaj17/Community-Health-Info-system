@@ -1,4 +1,4 @@
-package com.example.healthinfo.ui
+package com.example.healthinfo.ui.profile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

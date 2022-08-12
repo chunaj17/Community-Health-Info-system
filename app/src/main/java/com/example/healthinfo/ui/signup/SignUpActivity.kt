@@ -1,9 +1,11 @@
 package com.example.healthinfo.ui.signup
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -36,6 +38,8 @@ class SignUpActivity : AppCompatActivity() {
         val loadingProgressBar = binding.progressBar
         val confirmPasswordEditText = binding.confirmButton.editText
         nextButton.setOnClickListener {
+            val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
             when {
                 emailEditText!!.text.isEmpty() -> {
                     emailEditText.error = "Enter Email"

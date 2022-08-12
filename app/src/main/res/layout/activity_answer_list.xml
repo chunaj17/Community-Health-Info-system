@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="3sp">
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2sp"
+        android:backgroundTint="@color/black"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_below="@id/progress_bar"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_marginBottom="5sp"
+        android:background="@drawable/ic_arrow_back_12"
+        android:contentDescription="@string/back_button" />
+
+    <ImageButton
+        android:id="@+id/profile_btn"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_below="@id/progress_bar"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5sp"
+        android:background="@drawable/ic_profile"
+        android:contentDescription="@string/profile" />
+
+    <ImageButton
+        android:id="@+id/setting_btn"
+        android:layout_width="24sp"
+        android:layout_height="24sp"
+        android:layout_below="@id/progress_bar"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5sp"
+        android:layout_toStartOf="@id/profile_btn"
+        android:background="@drawable/ic_setting_24"
+        android:contentDescription="@string/setting" />
+
+    <LinearLayout
+        android:id="@+id/question_linear_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/back_btn"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/question_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/question_title" />
+        <TextView
+            android:id="@+id/question_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/question_title" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="5sp"
+            android:background="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/question_body_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/question_detail" />
+        <TextView
+            android:id="@+id/question_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:text="@string/question_body" />
+
+        <ImageView
+            android:id="@+id/question_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/question_image"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="5sp"
+            android:layout_marginEnd="5sp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/answer_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/question_linear_view"
+        android:padding="2sp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/add_answer_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="start"
+        android:padding="5sp"
+        app:cardCornerRadius="10sp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/write_edit_text"
+                android:layout_width="360sp"
+                android:layout_height="wrap_content"
+                android:padding="2sp"
+                android:gravity="start"
+                android:background="@null"
+                android:hint="@string/add_your_answer_here" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp">
+                <ImageButton
+                    android:id="@+id/send_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/send_btn"
+                    android:background="@drawable/ic_send_24" />
+                <ImageButton
+                    android:id="@+id/image_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_below="@+id/send_btn"
+                    android:contentDescription="@string/send_btn"
+                    android:background="@drawable/ic_image_24" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

@@ -1,9 +1,11 @@
 package com.example.healthinfo.ui.login
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -34,8 +36,9 @@ class LoginActivity : AppCompatActivity() {
         val emailEditText = binding.email.editText
         val passwordEditText = binding.password.editText
         val loginButton = binding.loginBtn
-        val loadingProgressBar = binding.progressBar
         loginButton.setOnClickListener {
+            val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
             when {
                 emailEditText!!.text.isEmpty() -> emailEditText.error = "Enter Email"
                 passwordEditText!!.text.isEmpty() -> passwordEditText.error = "Enter password"
@@ -44,11 +47,12 @@ class LoginActivity : AppCompatActivity() {
                     val password = passwordEditText.text.toString().trim { it <= ' ' }
                     viewModel.authLogin(email, password)
                     lifecycleScope.launchWhenStarted{
-                        viewModel.loginState.collectLatest {
-                    when (it.isLoading) {
+                        viewModel.loginState.collectLatest {data ->
+                    when (data.isLoading) {
                         true -> binding.progressBar.visibility = View.VISIBLE
                         false -> {
-                            when(it.AccessAndRefreshTokenData) {
+                            when(data.AccessAndRefreshTokenData) {
+
                                 null -> binding.progressBar.visibility = View.VISIBLE
                                 else -> {
                                     binding.progressBar.visibility = View.GONE
