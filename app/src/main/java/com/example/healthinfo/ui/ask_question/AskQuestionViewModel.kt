@@ -24,37 +24,8 @@ constructor(
 ):ViewModel() {
     private val _askQuestionState = MutableStateFlow(AskQuestionState())
     val askQuestionState = _askQuestionState.asStateFlow()
-    private val _tokenState = MutableStateFlow(TokenState())
-    val tokenState = _tokenState.asStateFlow()
     private val ioDispatchers: CoroutineDispatcher = Dispatchers.IO
     private var searchJob: Job? = null
-    fun checkAccessToken() {
-        searchJob = viewModelScope.launch(ioDispatchers) {
-            delay(500L)
-            authRepositoryInterface.getAccessTokenAndEmail().onEach { result ->
-                when (result) {
-                    is Resource.Success -> {
-                        _tokenState.value = tokenState.value.copy(
-                            accessTokenData = result.data,
-                            isLoading = false
-                        )
-                    }
-                    is Resource.Loading -> {
-                        _tokenState.value = tokenState.value.copy(
-                            accessTokenData = result.data ,
-                            isLoading = true
-                        )
-                    }
-                    is Resource.Error -> {
-                        _tokenState.value = tokenState.value.copy(
-                            accessTokenData = result.data ,
-                            isLoading = false
-                        )
-                    }
-                }
-            }.launchIn(this)
-        }
-    }
     fun askQuestion(email:String,img:String?, question_text:String, question_title:String) {
         searchJob = viewModelScope.launch(ioDispatchers) {
             delay(500L)

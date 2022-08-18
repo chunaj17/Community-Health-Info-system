@@ -30,13 +30,16 @@
             <TextView
                 android:id="@+id/dr_tag"
                 android:layout_width="wrap_content"
+                android:fontFamily="@font/roboto_bold"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3sp"
                 android:layout_toEndOf="@id/dr_profile_image"
                 android:text="@string/dr" />
+
             <TextView
                 android:id="@+id/doctor_name"
-                android:layout_width="wrap_content"
+                android:layout_width="wrap_content"            android:fontFamily="@font/roboto_bold"
+
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/dr_tag"
                 android:text="@string/doctor_name" />
@@ -64,7 +67,8 @@
 
                 <TextView
                     android:id="@+id/vote_count_value"
-                    android:layout_width="wrap_content"
+                    android:layout_width="wrap_content"            android:fontFamily="@font/roboto_bold"
+
                     android:layout_height="wrap_content"
                     android:layout_below="@id/vote_up_btn"
                     android:layout_marginStart="8sp"
@@ -87,7 +91,8 @@
                     android:id="@+id/answer_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2sp"
+                    android:layout_marginStart="2sp"            android:fontFamily="@font/roboto_bold"
+
                     android:layout_marginTop="2sp"
                     android:layout_marginEnd="2sp"
                     android:layout_marginBottom="2sp"

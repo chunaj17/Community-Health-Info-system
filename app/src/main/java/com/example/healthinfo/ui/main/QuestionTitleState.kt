@@ -1,8 +1,8 @@
 package com.example.healthinfo.ui.main
 
-import com.example.healthinfo.data.remote.dto.QuestionsTitleDto
+import com.example.healthinfo.data.remote.dto.question_title_dto.QuestionsTitleDto
 
 data class QuestionTitleState(
-    val QuestionTitleItems: List<QuestionsTitleDto> = emptyList(),
+    val QuestionTitleItems: QuestionsTitleDto? = null,
     val isLoading: Boolean = false
 )

@@ -16,11 +16,11 @@ class AnswerListAdapter(private val interaction: Interaction? = null) :
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DataDto>() {
 
         override fun areItemsTheSame(oldItem: DataDto, newItem: DataDto): Boolean {
-            TODO("not implemented")
+            return  oldItem.doctor_name == newItem.doctor_name
         }
 
         override fun areContentsTheSame(oldItem: DataDto, newItem: DataDto): Boolean {
-            TODO("not implemented")
+            return oldItem == newItem
         }
 
     }
@@ -65,15 +65,22 @@ class AnswerListAdapter(private val interaction: Interaction? = null) :
                 answerDetail.text = item.answer_text
                 doctorName.text  =item.doctor_name
                 voteCountValue.text = item.vote_count
-//                answerImage.setImageURI(item.answer_image.toUri())
             }
             root.setOnClickListener {
                 interaction?.onItemSelected(position, item)
+            }
+            voteUpBtn.setOnClickListener {
+                interaction?.addVote(item)
+            }
+            voteDownBtn.setOnClickListener {
+                interaction?.removeVote(item)
             }
         }
     }
 
     interface Interaction {
         fun onItemSelected(position: Int, item: DataDto)
+        fun addVote(item: DataDto)
+        fun removeVote(item: DataDto)
     }
 }

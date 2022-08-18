@@ -16,8 +16,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
             android:padding="5sp"
-            android:text="@string/question_title"
-            android:textAlignment="center" />
+            android:text="@string/question_title" />
 
         <Button
             android:id="@+id/answer_btn"

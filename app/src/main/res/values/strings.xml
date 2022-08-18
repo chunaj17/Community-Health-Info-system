@@ -39,13 +39,13 @@
     <string name="let_s_get_to_know_you_better">Let\'s get to know you better</string>
     <string name="your_first_name">your first name here....</string>
     <string name="age">age</string>
-    <string name="experience">experience</string>
-    <string name="specialization">specialization</string>
+    <string name="experience">Experience</string>
+    <string name="specialization">Specialization</string>
     <string name="work_location">work location</string>
     <string name="your_last_name_here">your last name here....</string>
     <string name="finish">Finish</string>
     <string name="doctor_profile_picture">Doctor profile picture</string>
-    <string name="home_address">home address</string>
+    <string name="home_address">Home address</string>
     <string name="doctor">Doctor</string>
     <string name="just_user">Just User</string>
     <string name="tell_us_more_are_your">Tell us more.are your?</string>
@@ -69,4 +69,5 @@
     <string name="send_btn">send btn</string>
     <string name="dr">Dr.</string>
     <string name="question_detail">Question Detail</string>
+    <string name="user_age">Age</string>
 </resources>

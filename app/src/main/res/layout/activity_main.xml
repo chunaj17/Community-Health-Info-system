@@ -9,14 +9,16 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
-           android:id="@+id/progress_bar"
+            android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:indeterminate="true"
+            android:layout_below="@+id/app_bar"
             android:backgroundTint="@color/black"
-            android:visibility="gone"
-            android:layout_below="@+id/app_bar"/>
+            android:indeterminate="true"
+            android:visibility="gone" />
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -27,10 +29,20 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/pencil"
+                android:background="@color/blue"
                 app:popupTheme="@style/Theme.HealthCare.PopupOverlay" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
+            android:id="@+id/empty_animation"
+            android:layout_width="wrap_content"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/progress_bar"
+            />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -48,7 +60,7 @@
             android:id="@+id/question_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/progress_bar" />
+            android:layout_below="@+id/empty_animation" />
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,8 +6,10 @@ import com.example.healthinfo.data.local.HealthCareDB
 import com.example.healthinfo.data.remote.api.HealthCareApi
 import com.example.healthinfo.data.repository.AuthRepositoryImp
 import com.example.healthinfo.data.repository.QuestionTitleRepositoryImp
+import com.example.healthinfo.data.repository.UserProfileRepositoryImp
 import com.example.healthinfo.domain.repository.AuthRepositoryInterface
 import com.example.healthinfo.domain.repository.QuestionTitleRepository
+import com.example.healthinfo.domain.repository.UserProfileRepositoryInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,5 +58,12 @@ object AppModule {
         db: HealthCareDB
     ): AuthRepositoryInterface {
         return AuthRepositoryImp(api, db.dao)
+    }
+    @Provides
+    @Singleton
+    fun provideUserProfileRepositoryImp(
+        api:HealthCareApi
+    ):UserProfileRepositoryInterface{
+        return  UserProfileRepositoryImp(api)
     }
 }

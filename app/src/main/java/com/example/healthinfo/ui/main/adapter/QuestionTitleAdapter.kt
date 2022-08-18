@@ -5,24 +5,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import com.example.healthinfo.data.remote.dto.QuestionsTitleDto
+import com.example.healthinfo.data.remote.dto.question_title_dto.QuestionTitleDataDto
 import com.example.healthinfo.databinding.QuestionTitleItemBinding
 
 class QuestionTitleAdapter(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<QuestionsTitleDto>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<QuestionTitleDataDto>() {
 
         override fun areItemsTheSame(
-            oldItem: QuestionsTitleDto,
-            newItem: QuestionsTitleDto
+            oldItem: QuestionTitleDataDto,
+            newItem: QuestionTitleDataDto
         ): Boolean {
            return oldItem.question_title == newItem.question_title
         }
 
         override fun areContentsTheSame(
-            oldItem: QuestionsTitleDto,
-            newItem: QuestionsTitleDto
+            oldItem: QuestionTitleDataDto,
+            newItem: QuestionTitleDataDto
         ): Boolean {
            return  oldItem == newItem
         }
@@ -55,7 +55,7 @@ class QuestionTitleAdapter(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
-    fun submitList(list: List<QuestionsTitleDto>) {
+    fun submitList(list: List<QuestionTitleDataDto>) {
         differ.submitList(list)
     }
 
@@ -64,9 +64,10 @@ class QuestionTitleAdapter(private val interaction: Interaction? = null) :
         private val binding: QuestionTitleItemBinding,
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: QuestionsTitleDto, position: Int) = with(binding) {
+        fun bind(item: QuestionTitleDataDto, position: Int) = with(binding) {
             questionTitle.text = item.question_title
-
+            answerBtn.text = item.answers_count.toString()
+            viewBtn.text = item.view_count.toString()
             root.setOnClickListener {
                 interaction?.onItemSelected(position, item)
             }
@@ -75,7 +76,7 @@ class QuestionTitleAdapter(private val interaction: Interaction? = null) :
     }
 
     interface Interaction {
-        fun onItemSelected(position: Int, item: QuestionsTitleDto)
+        fun onItemSelected(position: Int, item: QuestionTitleDataDto)
 
     }
 }

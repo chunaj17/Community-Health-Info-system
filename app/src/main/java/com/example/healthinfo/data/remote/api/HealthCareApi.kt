@@ -4,6 +4,7 @@ import com.example.healthinfo.data.remote.body_request.*
 import com.example.healthinfo.data.remote.dto.*
 import com.example.healthinfo.data.remote.dto.answer_dto.AnswersListDto
 import com.example.healthinfo.data.remote.dto.quesion_detatil_dto.QuestionDetailDto
+import com.example.healthinfo.data.remote.dto.question_title_dto.QuestionsTitleDto
 import retrofit2.http.*
 
 interface HealthCareApi {
@@ -13,7 +14,7 @@ interface HealthCareApi {
     }
 
     @GET("question")
-    suspend fun getQuestionTitle(): List<QuestionsTitleDto>
+    suspend fun getQuestionTitle(): QuestionsTitleDto
 
     @POST("question")
     @Headers("Content-Type:application/json")
@@ -49,5 +50,18 @@ interface HealthCareApi {
     @GET("answer/{question_title}")
     suspend fun getAnswersToQuestion(@Path("question_title") paramBody: String): AnswersListDto
 
+    @GET("profile/{user_email}")
+    suspend fun getDoctorProfile(@Path("user_email") paramBody: String): DoctorProfileDto
 
+    @GET("profile/{user_email}")
+    suspend fun getPatientProfile(@Path("user_email") paramBody: String): PatientProfileDto
+
+    @POST("profile/{user_email}")
+    suspend fun identifyUser(@Path("user_email") paramBody: String): IdentifyUserDto
+    @POST("view")
+    suspend fun addView(@Body requestBody: ViewBodyRequest ): ViewDto
+    @POST("vote/add")
+    suspend fun addVote(@Body requestBody: AddVoteRequestBody):AddVoteDto
+    @POST("vote/remove")
+    suspend fun removeVote(@Body requestBody: RemoveVoteRequestBody):RemoveVoteDto
 }

@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/answer_list_items.xml" value="0.3541666666666667" />
+        <entry key="app/src/main/res/layout/ask_question_dialogue.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.35520833333333335" />
         <entry key="app/src/main/res/layout/doctor_or_patient_custom_dialogue.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/doctor_or_patient_custome_dialogue.xml" value="0.5" />

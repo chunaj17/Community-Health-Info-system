@@ -6,14 +6,16 @@
     android:layout_height="match_parent"
     android:layout_margin="5sp"
     tools:context=".ui.profile.ProfileActivity">
+
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
         android:layout_margin="2sp"
         android:backgroundTint="@color/black"
+        android:indeterminate="true"
         android:visibility="gone" />
+
     <ImageButton
         android:id="@+id/back_btn"
         android:layout_width="24sp"
@@ -27,21 +29,182 @@
         android:layout_marginBottom="5sp"
         android:background="@drawable/ic_arrow_back_12"
         android:contentDescription="@string/back_button" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/user_profile_image"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/back_btn"
-        />
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/user_profile_image" />
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/edit_profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/back_btn"
-        android:layout_marginTop="40sp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="40sp"
         android:layout_toEndOf="@+id/profile_image"
         android:background="@drawable/ic_edit_icon" />
+
+    <LinearLayout
+        android:id="@+id/user_name_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_profile_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="1sp"
+        android:orientation="horizontal"
+        android:padding="2sp">
+
+        <TextView
+            android:id="@+id/doctor_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/dr" />
+
+        <TextView
+            android:id="@+id/doctor_first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:text="@string/doctor_name" />
+        <TextView
+            android:id="@+id/doctor_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
+            android:layout_marginStart="3sp"
+            android:text="@string/doctor_name" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/user_name_linear"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/email" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/specialization"
+            android:layout_width="180dp"
+            android:padding="10sp"
+            android:layout_marginStart="5sp"
+            app:cardCornerRadius="10sp"
+            android:layout_below="@+id/user_email"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"            android:padding="10sp"
+
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/specialization_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2sp"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/specialization" />
+
+                <TextView
+                    android:id="@+id/specialization_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="@string/specialization" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/experience"
+        android:layout_width="180dp"
+        android:padding="10sp"
+        android:layout_marginEnd="5sp"
+        android:layout_below="@+id/user_email"
+        app:cardCornerRadius="10sp"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"            android:padding="10sp"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/experience" />
+
+            <TextView
+                android:id="@+id/experience_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/experience" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/age"
+        android:layout_width="180dp"
+        android:padding="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginEnd="5sp"
+        android:layout_below="@+id/experience"
+        app:cardCornerRadius="10sp"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10sp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/user_age" />
+
+            <TextView
+                android:id="@+id/age_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/age" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/address"
+        android:layout_width="180dp"
+        android:padding="10sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginStart="5sp"
+        android:layout_below="@+id/specialization"
+        app:cardCornerRadius="10sp"
+        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"            android:padding="10sp"
+
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2sp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/home_address" />
+
+            <TextView
+                android:id="@+id/address_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/home_address" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

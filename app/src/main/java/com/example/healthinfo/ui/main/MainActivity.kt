@@ -9,24 +9,34 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.healthinfo.R
 import com.example.healthinfo.data.local.entity.AccessTokenEntity
-import com.example.healthinfo.data.remote.dto.QuestionsTitleDto
+import com.example.healthinfo.data.remote.dto.question_title_dto.QuestionTitleDataDto
+import com.example.healthinfo.data.remote.dto.question_title_dto.QuestionsTitleDto
 import com.example.healthinfo.databinding.ActivityMainBinding
+import com.example.healthinfo.databinding.AskQuestionDialogueBinding
 import com.example.healthinfo.ui.answer_list.AnswerListActivity
-import com.example.healthinfo.ui.ask_question.AskQuestion
+import com.example.healthinfo.ui.ask_question.AskQuestionViewModel
 import com.example.healthinfo.ui.login.LoginActivity
 import com.example.healthinfo.ui.main.adapter.QuestionTitleAdapter
+import com.example.healthinfo.ui.profile.ProfileActivity
 import com.example.healthinfo.ui.signup.SignUpActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var arrayList: ArrayList<QuestionTitleDataDto>
+    private val askQuestionViewModel: AskQuestionViewModel by viewModels()
+    private lateinit var dialogueBinding: AskQuestionDialogueBinding
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
     private lateinit var questionTitleAdapter: QuestionTitleAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,23 +56,75 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                     true -> binding.progressBar.visibility = View.VISIBLE
                     false -> {
                         binding.progressBar.visibility = View.GONE
-                        questionTitleAdapter.submitList(it.QuestionTitleItems)
+
+                        when (it.QuestionTitleItems) {
+                            null -> binding.progressBar.visibility = View.VISIBLE
+                            else -> {
+                                binding.progressBar.visibility = View.GONE
+                                questionTitleAdapter.submitList(it.QuestionTitleItems.data)
+                            }
+                        }
                     }
                 }
             }
         }
         binding.fab.setOnClickListener { view ->
             lifecycleScope.launchWhenStarted {
-                mainActivityViewModel.tokenState.collectLatest {
-                    when(it.accessTokenData) {
+                mainActivityViewModel.tokenState.collectLatest { TokenState ->
+                    when (TokenState.accessTokenData) {
                         emptyList<AccessTokenEntity>() -> {
-                            val intent = Intent(Intent(this@MainActivity, SignUpActivity::class.java))
+                            val intent =
+                                Intent(Intent(this@MainActivity, SignUpActivity::class.java))
                             startActivity(intent)
                             finish()
                         }
                         else -> {
-                            val intent = Intent(Intent(this@MainActivity, AskQuestion::class.java))
-                            startActivity(intent)
+                            dialogueBinding =
+                                AskQuestionDialogueBinding.inflate(this@MainActivity.layoutInflater)
+                            val questionTitle = dialogueBinding.editTextTitle.editText
+                            val questionDetail = dialogueBinding.detailQuestionEditText.editText
+                            questionTitle!!.addTextChangedListener { editable ->
+                                editable?.let {
+                                    if (it.isEmpty()) {
+                                        dialogueBinding.dialogFab.visibility = View.GONE
+                                    } else {
+                                        dialogueBinding.dialogFab.visibility = View.VISIBLE
+                                    }
+                                }
+                            }
+                            val askQuestionDialog = MaterialDialog(this@MainActivity)
+                            askQuestionDialog.setContentView(dialogueBinding.root)
+                            askQuestionDialog.show()
+                            TokenState.accessTokenData?.let { accessTokenEntity ->
+                                val email = accessTokenEntity[0].email!!
+                                dialogueBinding.dialogFab.setOnClickListener { view ->
+                                    dialogueBinding.progressBar.visibility = View.VISIBLE
+                                    when {
+                                        questionTitle.text.isEmpty() -> questionTitle.error =
+                                            "add question title"
+                                        questionDetail!!.text.isEmpty() -> questionDetail.error =
+                                            "add your question detail"
+                                        else -> {
+                                            val title = questionTitle.text.toString()
+                                            val detailText = questionDetail.text.toString()
+                                            askQuestionViewModel.askQuestion(
+                                                email,
+                                                null,
+                                                detailText,
+                                                title
+                                            )
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                "Question added",
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                            mainActivityViewModel.getQuestionTitle()
+                                            askQuestionDialog.dismiss()
+                                            recreate()
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -80,7 +142,7 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         mainActivityViewModel.checkAccessToken()
         lifecycleScope.launchWhenStarted {
             mainActivityViewModel.tokenState.collectLatest {
-                when(it.isLoading) {
+                when (it.isLoading) {
                     true -> binding.progressBar.visibility = View.VISIBLE
                     false -> {
                         binding.progressBar.visibility = View.GONE
@@ -103,13 +165,56 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (questionTitleAdapter.itemCount == 0) {
+                    binding.emptyAnimation.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    binding.emptyAnimation.setAnimation("empty.json")
+                    binding.emptyAnimation.playAnimation()
+                }
+                lifecycleScope.launchWhenStarted {
+                    mainActivityViewModel.questionTitleState.collectLatest { QuestionTitleState ->
+                        when (QuestionTitleState.isLoading) {
+                            true -> binding.progressBar.visibility = View.VISIBLE
+                            false -> {
+                                binding.progressBar.visibility = View.GONE
+
+                                when (QuestionTitleState.QuestionTitleItems) {
+                                    null -> binding.progressBar.visibility = View.VISIBLE
+                                    else -> {
+                                        binding.progressBar.visibility = View.GONE
+                                        if (newText.isNotEmpty()) {
+                                            arrayList = arrayListOf<QuestionTitleDataDto>(
+                                                QuestionTitleDataDto(null, null, null)
+                                            )
+                                            arrayList.clear()
+                                            QuestionTitleState.QuestionTitleItems.data.forEachIndexed { index, questionTitleDataDto ->
+                                                if (questionTitleDataDto.question_title.toString()
+                                                        .contains(newText)
+                                                ) {
+                                                    arrayList.add(questionTitleDataDto)
+                                                }
+                                            }
+                                            binding.emptyAnimation.visibility = View.GONE
+                                            binding.questionRecyclerView.visibility = View.VISIBLE
+                                            questionTitleAdapter.submitList(arrayList)
+                                        } else {
+                                            arrayList = arrayListOf<QuestionTitleDataDto>(
+                                                QuestionTitleDataDto(null, null, null)
+                                            )
+                                            arrayList.clear()
+                                            questionTitleAdapter.submitList(QuestionTitleState.QuestionTitleItems.data)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 return false
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                // task HERE
-                //on submit send entire query
-                println(query)
+
                 return false
             }
 
@@ -127,7 +232,8 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                 true
             }
             R.id.profile_menu -> {
-
+                val intent = Intent(Intent(this, ProfileActivity::class.java))
+                startActivity(intent)
                 true
             }
             R.id.login_menu -> {
@@ -156,7 +262,7 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                                                 ).show()
                                                 recreate()
                                             }
-                                            true-> binding.progressBar.visibility = View.VISIBLE
+                                            true -> binding.progressBar.visibility = View.VISIBLE
                                         }
                                     }
                                 }
@@ -170,12 +276,46 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         }
     }
 
-    override fun onItemSelected(position: Int, item: QuestionsTitleDto) {
+    override fun onItemSelected(position: Int, item: QuestionTitleDataDto) {
+        mainActivityViewModel.checkAccessToken()
 
-        val intent = Intent(Intent(this, AnswerListActivity::class.java))
-        intent.putExtra("question_title",item.question_title)
-        startActivity(intent)
-        finish()
+        lifecycleScope.launchWhenStarted {
+            mainActivityViewModel.tokenState.collectLatest { tokenState ->
+                when (tokenState.isLoading) {
+                    true -> binding.progressBar.visibility = View.VISIBLE
+                    false -> {
+                        when (tokenState.accessTokenData) {
+                            emptyList<AccessTokenEntity>() -> {
+                                val intent = Intent(
+                                    Intent(
+                                        this@MainActivity,
+                                        SignUpActivity::class.java
+                                    )
+                                )
+                                startActivity(intent)
+                                finish()
+                            }
+                            else -> {
+                                mainActivityViewModel.addView(item.question_title!!)
+                                tokenState.accessTokenData?.let {
+                                    val email = it[0].email
+                                    val intent = Intent(
+                                        Intent(
+                                            this@MainActivity,
+                                            AnswerListActivity::class.java
+                                        )
+                                    )
+                                    intent.putExtra("question_title", item.question_title)
+                                    intent.putExtra("email", email)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 //    override fun onSupportNavigateUp(): Boolean {
