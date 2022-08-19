@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.collectLatest
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
 
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var arrayList: ArrayList<QuestionTitleDataDto>
     private val askQuestionViewModel: AskQuestionViewModel by viewModels()
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
     private lateinit var questionTitleAdapter: QuestionTitleAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -165,43 +168,42 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (questionTitleAdapter.itemCount == 0) {
-                    binding.emptyAnimation.visibility = View.VISIBLE
-                    binding.progressBar.visibility = View.GONE
-                    binding.emptyAnimation.setAnimation("empty.json")
-                    binding.emptyAnimation.playAnimation()
-                }
                 lifecycleScope.launchWhenStarted {
                     mainActivityViewModel.questionTitleState.collectLatest { QuestionTitleState ->
                         when (QuestionTitleState.isLoading) {
                             true -> binding.progressBar.visibility = View.VISIBLE
                             false -> {
                                 binding.progressBar.visibility = View.GONE
-
                                 when (QuestionTitleState.QuestionTitleItems) {
                                     null -> binding.progressBar.visibility = View.VISIBLE
                                     else -> {
                                         binding.progressBar.visibility = View.GONE
                                         if (newText.isNotEmpty()) {
-                                            arrayList = arrayListOf<QuestionTitleDataDto>(
+                                            arrayList = arrayListOf(
                                                 QuestionTitleDataDto(null, null, null)
                                             )
                                             arrayList.clear()
                                             QuestionTitleState.QuestionTitleItems.data.forEachIndexed { index, questionTitleDataDto ->
                                                 if (questionTitleDataDto.question_title.toString()
-                                                        .contains(newText)
+                                                        .contains(newText.trim())
                                                 ) {
                                                     arrayList.add(questionTitleDataDto)
                                                 }
                                             }
+                                            questionTitleAdapter.submitList(arrayList)
+                                            when(questionTitleAdapter.itemCount) {
+                                                0 -> {
+                                                    binding.emptyAnimation.visibility = View.VISIBLE
+                                                    binding.questionRecyclerView.visibility = View.GONE
+                                                }
+                                                else -> {
+                                                    binding.emptyAnimation.visibility = View.GONE
+                                                    binding.questionRecyclerView.visibility = View.VISIBLE
+                                                }
+                                            }
+                                        } else {
                                             binding.emptyAnimation.visibility = View.GONE
                                             binding.questionRecyclerView.visibility = View.VISIBLE
-                                            questionTitleAdapter.submitList(arrayList)
-                                        } else {
-                                            arrayList = arrayListOf<QuestionTitleDataDto>(
-                                                QuestionTitleDataDto(null, null, null)
-                                            )
-                                            arrayList.clear()
                                             questionTitleAdapter.submitList(QuestionTitleState.QuestionTitleItems.data)
                                         }
                                     }
@@ -223,9 +225,6 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.setting_menu -> {
                 println("setting")
@@ -286,18 +285,23 @@ class MainActivity : AppCompatActivity(), QuestionTitleAdapter.Interaction {
                     false -> {
                         when (tokenState.accessTokenData) {
                             emptyList<AccessTokenEntity>() -> {
+                                binding.progressBar.visibility = View.GONE
+                                mainActivityViewModel.addView(item.question_title!!)
                                 val intent = Intent(
                                     Intent(
                                         this@MainActivity,
-                                        SignUpActivity::class.java
+                                        AnswerListActivity::class.java
                                     )
                                 )
+                                intent.putExtra("question_title", item.question_title)
                                 startActivity(intent)
                                 finish()
                             }
+                            null -> binding.progressBar.visibility = View.VISIBLE
                             else -> {
+                                binding.progressBar.visibility = View.GONE
                                 mainActivityViewModel.addView(item.question_title!!)
-                                tokenState.accessTokenData?.let {
+                                tokenState.accessTokenData.let {
                                     val email = it[0].email
                                     val intent = Intent(
                                         Intent(

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.healthinfo.R
 import com.example.healthinfo.data.local.entity.AccessTokenEntity
 import com.example.healthinfo.data.remote.dto.answer_dto.DataDto
 import com.example.healthinfo.databinding.ActivityAnswerListBinding
@@ -39,6 +40,28 @@ class AnswerListActivity : AppCompatActivity(), AnswerListAdapter.Interaction {
             adapter = answerListAdapter
         }
         lifecycleScope.launchWhenStarted {
+            viewModel.answerListState.collectLatest {
+                when (it.isLoading) {
+                    true -> binding.progressBar.visibility = View.VISIBLE
+                    false -> {
+                        when (it.data) {
+                            null -> {
+                                binding.progressBar.visibility = View.VISIBLE
+                                binding.emptyAnimation.visibility = View.VISIBLE
+                                binding.answerListRecyclerView.visibility = View.GONE
+                            }
+                            else -> {
+                                binding.progressBar.visibility = View.GONE
+                                binding.emptyAnimation.visibility = View.GONE
+                                binding.answerListRecyclerView.visibility = View.VISIBLE
+                                answerListAdapter.submitList(it.data.data)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
             mainActivityViewModel.tokenState.collectLatest { TokenState ->
                 when (TokenState.accessTokenData) {
                     emptyList<AccessTokenEntity>() -> {
@@ -54,6 +77,7 @@ class AnswerListActivity : AppCompatActivity(), AnswerListAdapter.Interaction {
                                 Intent(Intent(this@AnswerListActivity, SignUpActivity::class.java))
                             startActivity(intent)
                             finish()
+
                         }
                     }
                     else -> {
@@ -83,22 +107,6 @@ class AnswerListActivity : AppCompatActivity(), AnswerListAdapter.Interaction {
                                         }
                                     }
                                 }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            viewModel.answerListState.collectLatest {
-                when (it.isLoading) {
-                    true -> binding.progressBar.visibility = View.VISIBLE
-                    false -> {
-                        when (it.data) {
-                            null -> binding.progressBar.visibility = View.VISIBLE
-                            else -> {
-                                binding.progressBar.visibility = View.GONE
-                                answerListAdapter.submitList(it.data.data)
                             }
                         }
                     }
@@ -145,18 +153,89 @@ class AnswerListActivity : AppCompatActivity(), AnswerListAdapter.Interaction {
     }
 
     override fun addVote(item: DataDto) {
-        val email = intent.getStringExtra("email")
-        val questionTitle = intent.getStringExtra("question_title")
-        viewModel.addVote(email!!,item.answer_text )
-        viewModel.getAnswerList(questionTitle!!)
-        recreate()
+        lifecycleScope.launchWhenStarted {
+            mainActivityViewModel.tokenState.collectLatest { TokenState ->
+                when (TokenState.accessTokenData) {
+                    emptyList<AccessTokenEntity>() -> {
+                        Toast.makeText(
+                            this@AnswerListActivity,
+                            "Signup first so you vote for answers",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        val intent =
+                            Intent(Intent(this@AnswerListActivity, SignUpActivity::class.java))
+                        startActivity(intent)
+                        finish()
+                    }
+                    else -> {
+                        val email = intent.getStringExtra("email")
+                        val questionTitle = intent.getStringExtra("question_title")
+                        viewModel.addVote(email!!, item.answer_text)
+                        lifecycleScope.launchWhenStarted {
+                            viewModel.addVoteState.collectLatest { addVoteState ->
+                                when (addVoteState.isLoading) {
+                                    true -> binding.progressBar.visibility = View.VISIBLE
+                                    false -> {
+
+                                        when (addVoteState.data) {
+                                            null -> binding.progressBar.visibility =
+                                                View.VISIBLE
+                                            else -> {
+                                                binding.progressBar.visibility = View.GONE
+                                                viewModel.getAnswerList(questionTitle!!)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
+
     override fun removeVote(item: DataDto) {
-        val email = intent.getStringExtra("email")
-        val questionTitle = intent.getStringExtra("question_title")
-        viewModel.removeVote(email!!, item.answer_text)
-        viewModel.getAnswerList(questionTitle!!)
-        recreate()
+        lifecycleScope.launchWhenStarted {
+            mainActivityViewModel.tokenState.collectLatest { TokenState ->
+                when (TokenState.accessTokenData) {
+                    emptyList<AccessTokenEntity>() -> {
+                        Toast.makeText(
+                            this@AnswerListActivity,
+                            "Signup first so you vote for answers",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        val intent =
+                            Intent(Intent(this@AnswerListActivity, SignUpActivity::class.java))
+                        startActivity(intent)
+                        finish()
+                    }
+                    else -> {
+                        val email = intent.getStringExtra("email")
+                        val questionTitle = intent.getStringExtra("question_title")
+                        viewModel.removeVote(email!!, item.answer_text)
+                        lifecycleScope.launchWhenStarted {
+                            viewModel.removeVoteState.collectLatest { removeVoteState ->
+                                when (removeVoteState.isLoading) {
+                                    true -> binding.progressBar.visibility = View.VISIBLE
+                                    false -> {
+
+                                        when (removeVoteState.data) {
+                                            null -> binding.progressBar.visibility =
+                                                View.VISIBLE
+                                            else -> {
+                                                binding.progressBar.visibility = View.GONE
+                                                viewModel.getAnswerList(questionTitle!!)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

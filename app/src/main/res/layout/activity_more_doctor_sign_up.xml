@@ -134,7 +134,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/finish"
-                android:backgroundTint="@color/pencil"
+                android:backgroundTint="@color/blue"
                 />
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress_bar"

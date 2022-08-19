@@ -59,13 +59,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/back_btn"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/question_title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
             android:layout_margin="5sp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/question_title" />
+
         <TextView
             android:id="@+id/question_title"
             android:layout_width="match_parent"
@@ -80,19 +82,14 @@
             android:layout_marginStart="5sp"
             android:layout_marginEnd="5sp"
             android:background="@android:color/darker_gray" />
-        <TextView
-            android:id="@+id/question_body_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"            android:fontFamily="@font/roboto_bold"
 
-            android:layout_margin="5sp"
-            android:text="@string/question_detail" />
         <TextView
             android:id="@+id/question_body"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"            android:fontFamily="@font/roboto_bold"
-
+            android:layout_height="wrap_content"
             android:layout_margin="5sp"
+
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/question_body" />
 
         <ImageView
@@ -118,17 +115,31 @@
         android:layout_below="@+id/question_linear_view"
         android:padding="2sp" />
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/empty_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/answer_and_send_replay_parent_card"
+        android:layout_below="@+id/answer_list_recycler_view"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="empty.json"
+        app:lottie_loop="true"
+        app:lottie_speed="2" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/blue"
         android:contentDescription="@string/floating_action_button"
+        android:visibility="gone"
         app:srcCompat="@drawable/ic_add_circle_24" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/answer_and_send_replay_parent_card"
         android:layout_width="match_parent"
@@ -147,15 +158,16 @@
                 android:id="@+id/answer_edit_text"
                 android:layout_width="0sp"
                 android:layout_height="0sp"
-                android:padding="2sp"
-                android:gravity="start"
-                android:fontFamily="@font/roboto_bold"
                 android:background="@null"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="start"
                 android:hint="@string/add_your_answer_here"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:padding="2sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/send_image_n_text_btn"/>
+                app:layout_constraintEnd_toStartOf="@+id/send_image_n_text_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <LinearLayout
                 android:id="@+id/send_image_n_text_btn"
                 android:layout_width="wrap_content"
@@ -170,8 +182,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:src="@drawable/ic_send_24"
-                    android:contentDescription="@string/send_btn" />
+                    android:contentDescription="@string/send_btn"
+                    android:src="@drawable/ic_send_24" />
+
                 <ImageButton
                     android:id="@+id/image_btn"
                     android:layout_width="wrap_content"

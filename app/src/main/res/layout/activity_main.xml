@@ -35,14 +35,15 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.airbnb.lottie.LottieAnimationView
-            android:visibility="gone"
             android:id="@+id/empty_animation"
             android:layout_width="wrap_content"
-            app:lottie_loop="true"
-            app:lottie_autoPlay="true"
             android:layout_height="match_parent"
             android:layout_below="@+id/progress_bar"
-            />
+            android:visibility="gone"
+            app:lottie_speed="2"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="empty.json"
+            app:lottie_loop="true" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -50,6 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/blue"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="16dp"
